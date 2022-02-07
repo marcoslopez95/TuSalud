@@ -18,6 +18,9 @@
                                 <BreezeNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </BreezeNavLink>
+                                <BreezeNavLink :href="route('users-index')" :active="onPageUser()">
+                                    Usuarios
+                                </BreezeNavLink>
                             </div>
                         </div>
 
@@ -114,11 +117,20 @@ export default {
         BreezeResponsiveNavLink,
         Link,
     },
-
     data() {
         return {
             showingNavigationDropdown: false,
         }
     },
+    methods:{
+        onPageUser(){
+            if(
+                route().current('users-index') 
+                ||
+                route().current('users-create')
+            )
+            return true
+        }
+    }
 }
 </script>

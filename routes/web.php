@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\User\Usercontroller;
+use App\Models\Rol;
 use Carbon\Carbon;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -37,4 +39,7 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/users',[Usercontroller::class, 'index'])->name('users-index');
+Route::get('/users/create',[Usercontroller::class, 'create'])->name('users-create');
 require __DIR__.'/auth.php';
+
