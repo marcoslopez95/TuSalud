@@ -5,22 +5,33 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Rol;
 use App\Models\User;
+use App\Repositories\RolRepository;
+use App\Services\RolService;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class Usercontroller extends Controller
 {
+    protected $service;
+    protected $rol;
+
+    public function __construct(UserService $service){
+        $this->service = $service;
+        $this->rol = (new RolService(new RolRepository(new Rol())));
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(User $users)
+    public function index(Request $request)
     {
-        //
-        // return $users->all();
+        $users = $this->service->index($request);
+        
         return Inertia::render('Users/index',[
-           'users'=>$users->all()
+           'users'=> $users
         ]);
     }
 
@@ -32,7 +43,7 @@ class Usercontroller extends Controller
     public function create()
     {
         //
-        $rol = Rol::all();
+        $rol = $this->rol->index();
         return Inertia::render('Users/Store',[
             'tipos' => $rol
         ]);
@@ -47,6 +58,7 @@ class Usercontroller extends Controller
     public function store(Request $request)
     {
         //
+
     }
 
     /**
@@ -66,9 +78,14 @@ class Usercontroller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
         //
+        $rol = Rol::all();
+        return Inertia::render('Users/Edit',[
+            'tipos' => $rol,
+            'user' => $user
+        ]);
     }
 
     /**
@@ -91,6 +108,6 @@ class Usercontroller extends Controller
      */
     public function destroy($id)
     {
-        //
+        
     }
 }
