@@ -39,7 +39,15 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/users',[Usercontroller::class, 'index'])->name('users-index');
-Route::get('/users/create',[Usercontroller::class, 'create'])->name('users-create');
+Route::prefix('users')->group(function () {
+    Route::get('/',[Usercontroller::class, 'index']);
+    Route::get('/create',[Usercontroller::class, 'create']);
+    Route::post('/create',[Usercontroller::class, 'create']);
+    Route::get('/edit/{user}',[Usercontroller::class, 'edit']);
+    Route::put('/edit/{user}',[Usercontroller::class, 'edit']);
+    Route::delete('/edit/{user}',[Usercontroller::class, 'destroy']);
+
+});
+
 require __DIR__.'/auth.php';
 

@@ -1,10 +1,10 @@
 <template>
-    <div class="row-span-full">
+    <div class="row-span-full flex justify-between">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ titulo }}
         </h2>
         <form :action="route(ruta)" method="get">
-            <Button class="bg-blue-500">
+            <Button class="bg-blue-500 hover:bg-blue-700 font-bold active:bg-blue-900 focus:bg-blue-900">
                 {{ boton }}
             </Button>
         </form>
