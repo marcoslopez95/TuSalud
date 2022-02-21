@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Repositories\BaseRepository;
+use Exception;
+use Illuminate\Support\Facades\DB;
 
 class BaseService {
     
@@ -29,8 +31,18 @@ class BaseService {
      */
     public function store($request)
     {
-        return $this->repository->store($request);
+        DB::beginTransaction();
+        try{
 
+            $registro = $this->repository->store($request);
+            DB::commit();
+
+            return $registro;
+
+        }catch(Exception $e){
+            DB::rollback();
+            return $e->getMessage();
+        }
     }
 
     /**

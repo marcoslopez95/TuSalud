@@ -18,8 +18,13 @@
                                 <BreezeNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </BreezeNavLink>
+
                                 <BreezeNavLink :href="route('users-index')" :active="onPageUser()">
                                     Usuarios
+                                </BreezeNavLink>
+
+                                <BreezeNavLink :href="route('roles-index')" :active="onPageRol()">
+                                    Roles
                                 </BreezeNavLink>
                             </div>
                         </div>
@@ -124,12 +129,10 @@ export default {
     },
     methods:{
         onPageUser(){
-            if(
-                route().current('users-index') 
-                ||
-                route().current('users-create')
-            )
-            return true
+            return route().current('users-*') 
+        },
+        onPageRol(){
+            return route().current('roles-*')
         }
     }
 }

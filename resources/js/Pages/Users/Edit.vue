@@ -5,6 +5,13 @@ export default {
     props:{
         tipos: Object,
         user: Object
+    },
+    data(){
+        return {
+            ruta : 'users/edit/'+this.user.id,
+            metodo: 'PUT',
+            titulo: 'Editar Usuario'
+        }
     }
 }
 </script>

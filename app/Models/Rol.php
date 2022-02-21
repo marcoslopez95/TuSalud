@@ -15,4 +15,6 @@ class Rol extends Model
         'nombre',
         'descripcion',
     ];
+
+    
 }

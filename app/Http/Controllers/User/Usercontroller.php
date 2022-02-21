@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BasController;
 use App\Models\Rol;
 use App\Models\User;
 use App\Repositories\RolRepository;
@@ -11,7 +11,7 @@ use App\Services\UserService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class Usercontroller extends Controller
+class Usercontroller extends BasController
 {
     protected $service;
     protected $rol;
@@ -28,7 +28,7 @@ class Usercontroller extends Controller
      */
     public function index(Request $request)
     {
-        $users = $this->service->index($request);
+        $users = parent::index($request);
         
         return Inertia::render('Users/index',[
            'users'=> $users
@@ -67,6 +67,7 @@ class Usercontroller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    
     public function show($id)
     {
         //

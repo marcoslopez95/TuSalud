@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Rol\RolController;
 use App\Http\Controllers\User\Usercontroller;
 use App\Models\Rol;
 use Carbon\Carbon;
@@ -39,13 +40,31 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::prefix('users')->group(function () {
-    Route::get('/',[Usercontroller::class, 'index']);
-    Route::get('/create',[Usercontroller::class, 'create']);
-    Route::post('/create',[Usercontroller::class, 'create']);
-    Route::get('/edit/{user}',[Usercontroller::class, 'edit']);
-    Route::put('/edit/{user}',[Usercontroller::class, 'edit']);
-    Route::delete('/edit/{user}',[Usercontroller::class, 'destroy']);
+Route::middleware(['auth', 'verified'])->group(function () {
+    
+    Route::prefix('users')->group(function () {
+        Route::name('users-')->group(function () {
+            Route::get('/',[Usercontroller::class, 'index'])->name('index');
+            Route::get('/create',[Usercontroller::class, 'create'])->name('create');
+            Route::post('/create',[Usercontroller::class, 'store'])->name('store');
+            Route::get('/edit/{user}',[Usercontroller::class, 'edit'])->name('edit');
+            Route::put('/edit/{user}',[Usercontroller::class, 'update'])->name('update');
+            Route::get('/{user}',[Usercontroller::class, 'show'])->name('show');
+            Route::delete('/edit/{user}',[Usercontroller::class, 'destroy'])->name('destroy');
+        });
+    });
+    
+    Route::prefix('roles')->group(function () {
+        Route::name('roles-')->group(function(){
+            Route::get('/',[RolController::class, 'index'])->name('index');
+            Route::get('/create',[RolController::class, 'create'])->name('create');
+            Route::post('/create',[RolController::class, 'store'])->name('store');
+            Route::get('/edit/{rol}',[RolController::class, 'edit'])->name('edit');
+            Route::put('/edit/{rol}',[RolController::class, 'update'])->name('update');
+            Route::get('/{rol}',[RolController::class, 'show'])->name('show');
+            Route::delete('/edit/{rol}',[RolController::class, 'destroy'])->name('destroy');
+        });
+    });
 
 });
 
