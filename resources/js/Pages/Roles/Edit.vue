@@ -11,10 +11,11 @@ export default {
     },
     data(){
         return {
-            ruta : '/edit/'+this.rol.id,
-            metodo: 'put',
-            titulo: 'Editar Rol',
-            titulo_card: null,
+            ruta        : 'roles-update',
+            rol_id         :  this.rol.id,
+            metodo      : 'put',
+            titulo      : 'Editar Rol',
+            titulo_card : null,
         }
     }
     

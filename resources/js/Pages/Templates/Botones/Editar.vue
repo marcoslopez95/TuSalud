@@ -15,7 +15,6 @@ export default {
     name:'Editar',
     props:{
         ruta: { type: String, default: 'dashboard'},
-        
     }
 }
 </script>

@@ -9,6 +9,7 @@ use App\Services\RolService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class RolController extends BasController
@@ -62,12 +63,13 @@ class RolController extends BasController
         $validator = Validator::make(
             $request->all(),
             [
-                'nombre' => 'required|string',
+                'nombre' => 'required|string|unique:App\Models\Rol',
                 'descripcion' => 'required|string'
             ],
             [
-                'required' => 'El campo :attribute es requerido',
-                'string' => 'El campo :attribute debe ser un string'
+                'required'  => 'El campo :attribute es requerido',
+                'string'    => 'El campo :attribute debe ser un string',
+                'unique'    => 'Ya existe un Rol con ese nombre'
             ]
         );
         
@@ -117,7 +119,28 @@ class RolController extends BasController
     public function update(Request $request, $id)
     {
         //
-        return $request;
+        //
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'nombre' => ['required','string', Rule::unique('roles')->ignore($id)],
+                'descripcion' => 'required|string'
+            ],
+            [
+                'required'  => 'El campo :attribute es requerido',
+                'string'    => 'El campo :attribute debe ser un string',
+                'unique'    => 'Ya existe un Rol con ese nombre'
+            ]
+        );
+        
+        if($validator-> fails()){
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $bool = $this->service->update($request, $id);
+
+        return ($bool) ? redirect()->route('roles-index') : redirect()->back()->withErrors($bool)->withInput();
+    
     }
 
     /**
@@ -128,6 +151,8 @@ class RolController extends BasController
      */
     public function destroy($id)
     {
-        
+        $bool = parent::destroy($id);
+
+        return ($bool) ? redirect()->route('roles-index') : redirect()->back()->withErrors($bool)->withInput();
     }
 }

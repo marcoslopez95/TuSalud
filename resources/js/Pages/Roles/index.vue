@@ -40,7 +40,10 @@
                                             <Editar 
                                                 :ruta="'/roles/edit/'+rol.id"
                                             />
-                                            <Eliminar />
+                                            <Eliminar 
+                                                :ruta="'roles-destroy'"
+                                                :id="rol.id"
+                                            />
                                        </AccionesContenedor>
                                    </td>
                                </tr>

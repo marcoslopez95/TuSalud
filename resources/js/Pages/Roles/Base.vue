@@ -43,8 +43,8 @@
                                     />
                                 </div>
 
-                                <div class="m-0 p-0 grid justify-end">
-                                     <BreezeButton class="ml-4 bg-blue-500 hover:bg-blue-600 h-full" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                                <div class="m-0 py-4 grid justify-center">
+                                     <BreezeButton class="mt-2 bg-blue-500 hover:bg-blue-600 h-full" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                                         Guardar
                                     </BreezeButton>
                                 </div>
@@ -95,9 +95,9 @@ export default {
             console.log(this.form.nombre);
             // console.log(metodo+' '+ruta);
             if (metodo == 'post')
-                this.form.post(this.route(ruta))
+                this.form.post(this.route(ruta),)
             if (metodo == 'put')
-                this.form.put(this.route(ruta))
+                this.form.put(this.route(ruta,{"rol":this.rol_id}))
         }
     }
 }

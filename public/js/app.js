@@ -22049,7 +22049,9 @@ __webpack_require__.r(__webpack_exports__);
       console.log(this.form.nombre); // console.log(metodo+' '+ruta);
 
       if (metodo == 'post') this.form.post(this.route(ruta));
-      if (metodo == 'put') this.form.put(this.route(ruta));
+      if (metodo == 'put') this.form.put(this.route(ruta, {
+        "rol": this.rol_id
+      }));
     }
   }
 });
@@ -22080,7 +22082,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      ruta: '/edit/' + this.rol.id,
+      ruta: 'roles-update',
+      rol_id: this.rol.id,
       metodo: 'put',
       titulo: 'Editar Rol',
       titulo_card: null
@@ -22239,7 +22242,31 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     Button: _Components_Button__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  name: 'Eliminar'
+  name: 'Eliminar',
+  props: {
+    ruta: {
+      type: String,
+      required: true
+    },
+    id: {
+      type: Number,
+      required: true
+    }
+  },
+  data: function data() {
+    return {
+      form: this.$inertia.form()
+    };
+  },
+  methods: {
+    submit: function submit() {
+      console.log("ruta:".concat(this.ruta, " _ id:").concat(this.id)); // console.log(metodo+' '+ruta);
+
+      this.form["delete"](this.route(this.ruta, {
+        "rol": this.id
+      }));
+    }
+  }
 });
 
 /***/ }),
@@ -23970,7 +23997,7 @@ var _hoisted_5 = {
   "class": "grid grid-cols-3"
 };
 var _hoisted_6 = {
-  "class": "m-0 p-0 grid justify-end"
+  "class": "m-0 py-4 grid justify-center"
 };
 
 var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Guardar ");
@@ -24042,7 +24069,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, null, 8
       /* PROPS */
       , ["modelValue"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BreezeButton, {
-        "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["ml-4 bg-blue-500 hover:bg-blue-600 h-full", {
+        "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["mt-2 bg-blue-500 hover:bg-blue-600 h-full", {
           'opacity-25': $data.form.processing
         }]),
         disabled: $data.form.processing
@@ -24148,7 +24175,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
               ruta: '/roles/edit/' + rol.id
             }, null, 8
             /* PROPS */
-            , ["ruta"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Eliminar)];
+            , ["ruta"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Eliminar, {
+              ruta: 'roles-destroy',
+              id: rol.id
+            }, null, 8
+            /* PROPS */
+            , ["id"])];
           }),
           _: 2
           /* DYNAMIC */
@@ -24278,7 +24310,11 @@ var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Button");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("form", {
+    onSubmit: _cache[0] || (_cache[0] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+      return $options.submit();
+    }, ["prevent"]))
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
     "class": "stroke-white bg-red-500 px-1 py-1 hover:bg-red-600",
     title: "Eliminar"
   }, {
@@ -24288,7 +24324,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  });
+  })], 32
+  /* HYDRATE_EVENTS */
+  );
 }
 
 /***/ }),

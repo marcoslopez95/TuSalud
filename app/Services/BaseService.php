@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\BaseRepository;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class BaseService {
@@ -26,15 +27,15 @@ class BaseService {
     /**
      * Store a newly created resource in storage.
      *
-     * @param  array  $request
+     * @param  \Illimunate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($request)
+    public function store(Request $request)
     {
         DB::beginTransaction();
         try{
 
-            $registro = $this->repository->store($request);
+            $registro = $this->repository->store($request->all());
             DB::commit();
 
             return $registro;
@@ -59,13 +60,25 @@ class BaseService {
     /**
      * Update the specified resource in storage.
      *
-     * @param  array  $request
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update($request, $id)
     {
-        return $this->repository->update($request,$id);
+        DB::beginTransaction();
+        try{
+
+            $update = $this->repository->update($request->all(),$id);
+            DB::commit();
+
+            return $update;
+
+        }catch(Exception $e){
+            DB::rollback();
+            return $e->getMessage();
+        }
+       
     }
 
     /**
@@ -76,6 +89,21 @@ class BaseService {
      */
     public function destroy($id)
     {
-        return $this->repository->destroy($id);
+        DB::beginTransaction();
+        try{
+            $bool = $this->show($id);
+            $update = $this->repository->destroy($id);
+            DB::commit();
+
+            return [
+                'status' => 204,
+                'message' => 'Eliminado'
+            ];
+
+        }catch(Exception $e){
+            DB::rollback();
+            return $e->getMessage();
+        }
+        
     }
 }
