@@ -4,15 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Services\BaseService;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 
 class BasController extends Controller
 {
     protected $service;
+    protected $namePlural;
+    protected $index;
 
     public function __construct(BaseService $service)
     {
         $this->service = $service;
+        $this->index = $this->namePlural.'-index';
     }
 
     /**
@@ -28,14 +32,15 @@ class BasController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    // public function store(Request $request)
-    // {
-    //     return $this->service->store($request);
-
-    // }
+     public function _store($request)
+     {
+         $bool = $this->service->store($request);
+         return ($bool) ? redirect()->route($this->index) : redirect()->back()->withErrors($bool)->withInput();
+        
+    }
 
     /**
      * Display the specified resource.
@@ -55,9 +60,12 @@ class BasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function _update($request, $id)
     {
-        return $this->service->update($request,$id);
+         $bool = $this->service->update($request,$id);
+
+         return ($bool) ? redirect()->route($this->index) : redirect()->back()->withErrors($bool)->withInput();
+        
     }
 
     /**

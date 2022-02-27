@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Rol;
 
 use App\Http\Controllers\BasController;
+use App\Http\Requests\StoreRol;
 use App\Http\Requests\StoreRolRequest;
+use App\Http\Requests\UpdateRol;
 use App\Models\Rol;
 use App\Services\RolService;
 use Illuminate\Auth\Events\Registered;
@@ -15,8 +17,9 @@ use Inertia\Inertia;
 class RolController extends BasController
 {
     //
+    protected $namePlural = 'roles';
 
-    public function __construct(RolService$rol)
+    public function __construct(RolService $rol)
     {
         return parent::__construct($rol);
     }
@@ -57,27 +60,11 @@ class RolController extends BasController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRol $request)
     {
         //
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'nombre' => 'required|string|unique:App\Models\Rol',
-                'descripcion' => 'required|string'
-            ],
-            [
-                'required'  => 'El campo :attribute es requerido',
-                'string'    => 'El campo :attribute debe ser un string',
-                'unique'    => 'Ya existe un Rol con ese nombre'
-            ]
-        );
         
-        if($validator-> fails()){
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-        $bool = $this->service->store($request);
-        return ($bool) ? redirect()->route('roles-index') : redirect()->back()->withErrors($bool)->withInput();
+        return parent::_store($request);
         
     }
 
@@ -116,31 +103,11 @@ class RolController extends BasController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRol $request, $id)
     {
         //
         //
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'nombre' => ['required','string', Rule::unique('roles')->ignore($id)],
-                'descripcion' => 'required|string'
-            ],
-            [
-                'required'  => 'El campo :attribute es requerido',
-                'string'    => 'El campo :attribute debe ser un string',
-                'unique'    => 'Ya existe un Rol con ese nombre'
-            ]
-        );
-        
-        if($validator-> fails()){
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        $bool = $this->service->update($request, $id);
-
-        return ($bool) ? redirect()->route('roles-index') : redirect()->back()->withErrors($bool)->withInput();
-    
+       return parent::_update($request,$id);
     }
 
     /**

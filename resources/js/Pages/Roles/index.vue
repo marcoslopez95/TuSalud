@@ -17,6 +17,9 @@
                        
                        <table class="table-auto border-collapse w-full">
                            <thead class=" text-bold border-b-2 border-black ">
+                               <th class="w-10"> 
+                                   ID 
+                                </th>
                                <th class='w-40'>
                                    Nombre
                                </th>
@@ -29,6 +32,9 @@
                            </thead>
                            <tbody>
                                <tr v-for="rol in roles" :key="rol.id" class="text-center hover:bg-gray-100">
+                                   <td> 
+                                       {{ rol.id }}
+                                   </td>
                                    <td>
                                        {{ rol.nombre }}
                                    </td>

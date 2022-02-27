@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\BaseRepository;
 use Exception;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -27,10 +28,10 @@ class BaseService {
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illimunate\Http\Request  $request
+     * @param  \Illuminate\Foundation\Http\FormRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(FormRequest $request)
     {
         DB::beginTransaction();
         try{
@@ -60,11 +61,11 @@ class BaseService {
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Foundation\Http\FormRequest $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($request, $id)
+    public function update(FormRequest $request, $id)
     {
         DB::beginTransaction();
         try{

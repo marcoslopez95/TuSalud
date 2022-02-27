@@ -3,21 +3,26 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\BasController;
+use App\Http\Requests\StoreUser;
 use App\Models\Rol;
 use App\Models\User;
 use App\Repositories\RolRepository;
 use App\Services\RolService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
 class Usercontroller extends BasController
 {
     protected $service;
     protected $rol;
+    protected $namePlural;
+    protected $index;
 
     public function __construct(UserService $service){
         $this->service = $service;
+        $this->index = $this->namePlural.'-index';
         $this->rol = (new RolService(new RolRepository(new Rol())));
     }
 
@@ -52,12 +57,15 @@ class Usercontroller extends BasController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Foundation\Http\FormRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($request)
     {
         //
+        $bool = $this->service->store($request);
+
+        return ($bool) ? redirect()->route($this->index) : redirect()->back()->withErrors($bool)->withInput();
 
     }
 
@@ -99,6 +107,10 @@ class Usercontroller extends BasController
     public function update(Request $request, $id)
     {
         //
+        $bool = $this->service->update($request, $id);
+
+        return ($bool) ? redirect()->route($this->index) : redirect()->back()->withErrors($bool)->withInput();
+    
     }
 
     /**

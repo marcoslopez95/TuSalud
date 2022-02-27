@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRolRequest extends FormRequest
+class StoreUser extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,15 +13,8 @@ class StoreRolRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return $this->user()->rol()->id == 1;
     }
-
-    /**
-     * Indicates if the validator should stop on the first rule failure.
-     *
-     * @var bool
-     */
-    protected $stopOnFirstFailure = true;
 
     /**
      * Get the validation rules that apply to the request.
@@ -32,8 +25,10 @@ class StoreRolRequest extends FormRequest
     {
         return [
             //
-            'nombre' => 'required|string',
-            'descripcion' => 'required|string'
+            'name'      => 'required|string',
+            'email'     => ['required','unique:App\Models\User'],
+            'password'  => 'required|confirmed',
+            'id_rol'    => 'exists:App\Moldes\Rol,id'
         ];
     }
 
@@ -45,8 +40,11 @@ class StoreRolRequest extends FormRequest
     public function messages()
     {
         return [
-            'required' => 'El :attribute es requerido',
-            'string' => 'El campo :attribute debe ser un texto',
+            'required'  => 'El :attribute es requerido',
+            'string'    => 'El campo :attribute debe ser un texto',
+            'confirmed' => 'Debe confirmar la contraseña',
+            'exists'    => 'No existe el rol',
+            'unique'    => 'Ya existe una cuenta con ese email'
         ];
     }
 }

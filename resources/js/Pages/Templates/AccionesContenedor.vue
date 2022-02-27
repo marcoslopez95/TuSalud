@@ -1,5 +1,5 @@
 <template>
-    <div class="row-span-full flex justify-evenly">
+    <div class="row-span-full flex justify-evenly mt-2 mb-0">
         <slot />
     </div>
 </template>
