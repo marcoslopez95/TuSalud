@@ -16,6 +16,7 @@ export default {
     props: {
         ruta: { type: String, required: true },
         id: { type: Number, required: true },
+        nombre: { type: Object, required: true }
     },
     data() {
         return{
@@ -26,7 +27,7 @@ export default {
         submit() {
             console.log(`ruta:${this.ruta} _ id:${this.id}`);
             // console.log(metodo+' '+ruta);
-                this.form.delete(this.route(this.ruta,{"rol":this.id}))
+                this.form.delete(this.route(this.ruta,this.nombre))
         }
     }
 }

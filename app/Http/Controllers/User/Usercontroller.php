@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\BasController;
 use App\Http\Requests\StoreUser;
+use App\Http\Requests\UpdateUser;
 use App\Models\Rol;
 use App\Models\User;
 use App\Repositories\RolRepository;
@@ -15,15 +16,12 @@ use Inertia\Inertia;
 
 class Usercontroller extends BasController
 {
-    protected $service;
     protected $rol;
-    protected $namePlural;
-    protected $index;
+    protected $namePlural = 'users';
 
     public function __construct(UserService $service){
-        $this->service = $service;
-        $this->index = $this->namePlural.'-index';
         $this->rol = (new RolService(new RolRepository(new Rol())));
+        parent::__construct($service);
     }
 
     /**
@@ -60,13 +58,10 @@ class Usercontroller extends BasController
      * @param  \Illuminate\Foundation\Http\FormRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store($request)
+    public function store(StoreUser $request)
     {
         //
-        $bool = $this->service->store($request);
-
-        return ($bool) ? redirect()->route($this->index) : redirect()->back()->withErrors($bool)->withInput();
-
+        return parent::_store($request);
     }
 
     /**
@@ -104,13 +99,10 @@ class Usercontroller extends BasController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUser $request, $id)
     {
         //
-        $bool = $this->service->update($request, $id);
-
-        return ($bool) ? redirect()->route($this->index) : redirect()->back()->withErrors($bool)->withInput();
-    
+        return parent::_update($request,$id);
     }
 
     /**
@@ -121,6 +113,6 @@ class Usercontroller extends BasController
      */
     public function destroy($id)
     {
-        
+        return parent::destroy($id);
     }
 }

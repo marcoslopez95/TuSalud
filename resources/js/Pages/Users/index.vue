@@ -17,6 +17,9 @@
                        
                        <table class="table-auto border-collapse w-full">
                            <thead class=" text-bold border-b-2 border-black ">
+                               <th class="w-10">
+                                   ID
+                               </th>
                                <th class='w-40'>
                                    Nombre
                                </th>
@@ -33,6 +36,9 @@
                            <tbody>
                                <tr v-for="user in users" :key="user.id" class="text-center hover:bg-gray-100">
                                    <td>
+                                       {{user.id }}
+                                   </td>
+                                   <td>
                                        {{ user.name }}
                                    </td>
                                    <td>
@@ -46,7 +52,11 @@
                                             <Editar 
                                                 :ruta="'/users/edit/'+user.id"
                                             />
-                                            <Eliminar />
+                                            <Eliminar 
+                                                :ruta="'users-destroy'"
+                                                :id="user.id"
+                                                :nombre="{'user':user.id}"
+                                            />
                                        </AccionesContenedor>
                                    </td>
                                </tr>

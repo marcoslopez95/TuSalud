@@ -6,11 +6,18 @@ export default {
         tipos: Object,
         user: Object
     },
+    mounted(){
+        this.form.email    = this.user.email
+        this.form.name     = this.user.name
+        this.form.password = this.user.password
+        this.form.id_rol   = this.user.id_rol
+    },
     data(){
         return {
-            ruta : 'users/edit/'+this.user.id,
-            metodo: 'PUT',
-            titulo: 'Editar Usuario'
+            ruta    : 'users-update',
+            user_id : this.user.id,
+            metodo  : 'put',
+            titulo  : 'Editar Usuario'
         }
     }
 }

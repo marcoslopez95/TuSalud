@@ -7,12 +7,8 @@ export default {
     },
     data() {
         return {
-            user: {
-                name: null,
-                email: null
-            },
-            ruta : 'users/create',
-            metodo: 'POST',
+            ruta : 'users-create',
+            metodo: 'post',
             titulo: 'Crear Usuario'
         }
     }

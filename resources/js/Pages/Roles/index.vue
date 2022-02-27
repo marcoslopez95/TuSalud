@@ -49,6 +49,7 @@
                                             <Eliminar 
                                                 :ruta="'roles-destroy'"
                                                 :id="rol.id"
+                                                :nombre="{'rol':rol.id}"
                                             />
                                        </AccionesContenedor>
                                    </td>

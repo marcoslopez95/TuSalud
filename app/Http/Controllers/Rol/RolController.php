@@ -118,8 +118,6 @@ class RolController extends BasController
      */
     public function destroy($id)
     {
-        $bool = parent::destroy($id);
-
-        return ($bool) ? redirect()->route('roles-index') : redirect()->back()->withErrors($bool)->withInput();
+        return parent::destroy($id);
     }
 }

@@ -15,7 +15,6 @@ export default {
             rol_id         :  this.rol.id,
             metodo      : 'put',
             titulo      : 'Editar Rol',
-            titulo_card : null,
         }
     }
     

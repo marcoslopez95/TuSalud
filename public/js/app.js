@@ -22085,8 +22085,7 @@ __webpack_require__.r(__webpack_exports__);
       ruta: 'roles-update',
       rol_id: this.rol.id,
       metodo: 'put',
-      titulo: 'Editar Rol',
-      titulo_card: null
+      titulo: 'Editar Rol'
     };
   }
 });
@@ -22251,6 +22250,10 @@ __webpack_require__.r(__webpack_exports__);
     id: {
       type: Number,
       required: true
+    },
+    nombre: {
+      type: Object,
+      required: true
     }
   },
   data: function data() {
@@ -22262,9 +22265,7 @@ __webpack_require__.r(__webpack_exports__);
     submit: function submit() {
       console.log("ruta:".concat(this.ruta, " _ id:").concat(this.id)); // console.log(metodo+' '+ruta);
 
-      this.form["delete"](this.route(this.ruta, {
-        "rol": this.id
-      }));
+      this.form["delete"](this.route(this.ruta, this.nombre));
     }
   }
 });
@@ -22318,11 +22319,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _Components_Button_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../Components/Button.vue */ "./resources/js/Components/Button.vue");
-/* harmony import */ var _Components_Input_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Components/Input.vue */ "./resources/js/Components/Input.vue");
+/* harmony import */ var _Components_Button_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Components/Button.vue */ "./resources/js/Components/Button.vue");
+/* harmony import */ var _Components_Input_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Components/Input.vue */ "./resources/js/Components/Input.vue");
 /* harmony import */ var _Layouts_Authenticated_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Layouts/Authenticated.vue */ "./resources/js/Layouts/Authenticated.vue");
 /* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
 /* harmony import */ var _Pages_Templates_TituloCard_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/Pages/Templates/TituloCard.vue */ "./resources/js/Pages/Templates/TituloCard.vue");
+/* harmony import */ var _Components_Label_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/Components/Label.vue */ "./resources/js/Components/Label.vue");
+/* harmony import */ var _Components_ValidationErrors_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/Components/ValidationErrors.vue */ "./resources/js/Components/ValidationErrors.vue");
+
+
+
+
 
 
 
@@ -22334,18 +22341,37 @@ __webpack_require__.r(__webpack_exports__);
     Button: _Components_Button_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     Input: _Components_Input_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     BreezeAuthenticatedLayout: _Layouts_Authenticated_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    BreezeButton: _Components_Button_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    BreezeInput: _Components_Input_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    BreezeLabel: _Components_Label_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
+    BreezeValidationErrors: _Components_ValidationErrors_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
     Head: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_3__.Head,
     TituloCard: _Pages_Templates_TituloCard_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
-  data: function data() {
-    return {
-      ruta: null,
-      metodo: null,
-      titulo: null
-    };
-  },
   props: {
     tipos: Object
+  },
+  data: function data() {
+    return {
+      titulo: null,
+      form: this.$inertia.form({
+        email: '',
+        name: '',
+        password: '',
+        password_confirmation: '',
+        id_rol: ''
+      })
+    };
+  },
+  methods: {
+    submit: function submit(metodo, ruta) {
+      console.log(this.form); // console.log(metodo+' '+ruta);
+
+      if (metodo == 'post') this.form.post(this.route(ruta));
+      if (metodo == 'put') this.form.put(this.route(ruta, {
+        "user": this.user_id
+      }));
+    }
   }
 });
 
@@ -22370,10 +22396,17 @@ __webpack_require__.r(__webpack_exports__);
     tipos: Object,
     user: Object
   },
+  mounted: function mounted() {
+    this.form.email = this.user.email;
+    this.form.name = this.user.name;
+    this.form.password = this.user.password;
+    this.form.id_rol = this.user.id_rol;
+  },
   data: function data() {
     return {
-      ruta: 'users/edit/' + this.user.id,
-      metodo: 'PUT',
+      ruta: 'users-update',
+      user_id: this.user.id,
+      metodo: 'put',
       titulo: 'Editar Usuario'
     };
   }
@@ -22401,12 +22434,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      user: {
-        name: null,
-        email: null
-      },
-      ruta: 'users/create',
-      metodo: 'POST',
+      ruta: 'users-create',
+      metodo: 'post',
       titulo: 'Crear Usuario'
     };
   }
@@ -24181,10 +24210,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             /* PROPS */
             , ["ruta"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Eliminar, {
               ruta: 'roles-destroy',
-              id: rol.id
+              id: rol.id,
+              nombre: {
+                'rol': rol.id
+              }
             }, null, 8
             /* PROPS */
-            , ["id"])];
+            , ["id", "nombre"])];
           }),
           _: 2
           /* DYNAMIC */
@@ -24406,47 +24438,46 @@ var _hoisted_3 = {
 var _hoisted_4 = {
   "class": "p-6 bg-white border-b border-gray-200"
 };
-var _hoisted_5 = ["action", "method"];
-var _hoisted_6 = {
+var _hoisted_5 = {
   "class": "grid grid-cols-4"
 };
-var _hoisted_7 = {
-  "for": "id_rol"
-};
-
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Rol ");
-
-var _hoisted_9 = {
-  name: "id_rol",
-  id: "id_rol",
-  "class": "ml-2"
-};
-var _hoisted_10 = ["value"];
-var _hoisted_11 = {
-  "for": "nombre"
-};
-
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Nombre ");
-
-var _hoisted_13 = {
-  "for": "correo",
+var _hoisted_6 = {
   "class": "ml-3"
 };
-
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Correo ");
-
-var _hoisted_15 = {
-  "class": "m-0 p-0 grid justify-end"
+var _hoisted_7 = {
+  "class": "ml-3"
+};
+var _hoisted_8 = {
+  "class": "ml-3"
+};
+var _hoisted_9 = {
+  "class": "mt-3"
 };
 
-var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Guardar ");
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "for": "id_rol",
+  "class": "mr-2"
+}, "Rol", -1
+/* HOISTED */
+);
+
+var _hoisted_11 = ["value"];
+var _hoisted_12 = {
+  "class": "m-0 py-4 grid justify-end"
+};
+
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Guardar ");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
   var _component_TituloCard = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("TituloCard");
 
-  var _component_Input = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Input");
+  var _component_BreezeValidationErrors = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("BreezeValidationErrors");
+
+  var _component_BreezeLabel = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("BreezeLabel");
+
+  var _component_BreezeInput = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("BreezeInput");
 
   var _component_Button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Button");
 
@@ -24468,39 +24499,99 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
-        action: $data.ruta,
-        method: $data.metodo
-      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", _hoisted_9, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.tipos, function (tipo) {
+        onSubmit: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+          return $options.submit(_ctx.metodo, _ctx.ruta);
+        }, ["prevent"]))
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BreezeValidationErrors, {
+        "class": "mb-4"
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BreezeLabel, {
+        "for": "name",
+        value: "Nombre"
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BreezeInput, {
+        id: "name",
+        type: "text",
+        "class": "mt-1 block w-full",
+        modelValue: $data.form.name,
+        "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+          return $data.form.name = $event;
+        }),
+        required: "",
+        placeholder: "Nombre del Usuario"
+      }, null, 8
+      /* PROPS */
+      , ["modelValue"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BreezeLabel, {
+        "for": "email",
+        value: "Email"
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BreezeInput, {
+        id: "email",
+        type: "text",
+        "class": "mt-1 block w-full",
+        modelValue: $data.form.email,
+        "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+          return $data.form.email = $event;
+        }),
+        required: "",
+        placeholder: "Email del Usuario"
+      }, null, 8
+      /* PROPS */
+      , ["modelValue"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BreezeLabel, {
+        "for": "password",
+        value: "Contraseña"
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BreezeInput, {
+        id: "password",
+        type: "password",
+        "class": "mt-1 block w-full",
+        modelValue: $data.form.password,
+        "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+          return $data.form.password = $event;
+        }),
+        required: ""
+      }, null, 8
+      /* PROPS */
+      , ["modelValue"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BreezeLabel, {
+        "for": "password_confirmation",
+        value: "Confirmar Contraseña"
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BreezeInput, {
+        id: "password_confirmation",
+        type: "password",
+        "class": "mt-1 block w-full",
+        modelValue: $data.form.password_confirmation,
+        "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+          return $data.form.password_confirmation = $event;
+        }),
+        required: ""
+      }, null, 8
+      /* PROPS */
+      , ["modelValue"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+        name: "id_rol",
+        id: "id_rol",
+        "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+          return $data.form.id_rol = $event;
+        }),
+        "class": "border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
+      }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.tipos, function (tipo) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
           key: tipo.id,
           value: tipo.id
         }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(tipo.nombre), 9
         /* TEXT, PROPS */
-        , _hoisted_10);
+        , _hoisted_11);
       }), 128
       /* KEYED_FRAGMENT */
-      ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Input, {
-        type: "text",
-        value: _ctx.user.name
-      }, null, 8
-      /* PROPS */
-      , ["value"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Input, {
-        type: "email",
-        value: _ctx.user.email
-      }, null, 8
-      /* PROPS */
-      , ["value"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
+      ))], 512
+      /* NEED_PATCH */
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.id_rol]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
         "class": "bg-blue-500 hover:bg-blue-600 h-full"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_16];
+          return [_hoisted_13];
         }),
         _: 1
         /* STABLE */
 
-      })])])], 8
-      /* PROPS */
-      , _hoisted_5)])])])])];
+      })])])], 32
+      /* HYDRATE_EVENTS */
+      )])])])])];
     }),
     _: 1
     /* STABLE */
@@ -24544,6 +24635,8 @@ var _hoisted_5 = {
 var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", {
   "class": "text-bold border-b-2 border-black"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  "class": "w-10"
+}, " ID "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   "class": "w-40"
 }, " Nombre "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   "class": "w-20"
@@ -24583,7 +24676,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
           key: user.id,
           "class": "text-center hover:bg-gray-100"
-        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.name), 1
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.id), 1
+        /* TEXT */
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.name), 1
         /* TEXT */
         ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.email), 1
         /* TEXT */
@@ -24595,7 +24690,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
               ruta: '/users/edit/' + user.id
             }, null, 8
             /* PROPS */
-            , ["ruta"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Eliminar)];
+            , ["ruta"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Eliminar, {
+              ruta: 'users-destroy',
+              id: user.id,
+              nombre: {
+                'user': user.id
+              }
+            }, null, 8
+            /* PROPS */
+            , ["id", "nombre"])];
           }),
           _: 2
           /* DYNAMIC */

@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StoreUser extends FormRequest
+class UpdateUser extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +27,7 @@ class StoreUser extends FormRequest
         return [
             //
             'name'                  => 'required|string',
-            'email'                 => ['required','unique:App\Models\User'],
+            'email'                 => ['required',Rule::unique('users')->ignore($this->user)],
             'password'              => 'required|confirmed',
             'password_confirmation' => 'required',
             'id_rol'                => 'exists:App\Models\Rol,id'

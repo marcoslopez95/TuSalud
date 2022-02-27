@@ -76,6 +76,9 @@ class BasController extends Controller
      */
     public function destroy($id)
     {
-        return $this->service->destroy($id);
+        $bool = $this->service->destroy($id);
+
+        return ($bool) ? redirect()->route($this->index) : redirect()->back()->withErrors($bool)->withInput();
+        
     }
 }
